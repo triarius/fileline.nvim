@@ -1,37 +1,13 @@
+local construct = require("fileline.construct")
+
 local M = {}
 
-M.get_fileline = function()
-	local filename = vim.fn.expand("%:~:.")
-	local l, c = unpack(vim.api.nvim_win_get_cursor(0))
-	return filename .. ":" .. l .. ":" .. c
-end
-
-M.parse_filename = function(filename)
-	local f, l, c = string.match(filename, "^(.*):(%d+):(%d+)$")
-
-	if f ~= nil then
-		return {
-			filename = f,
-			line = tonumber(l),
-			column = tonumber(c),
-		}
-	end
-
-	f, l = string.match(filename, "^(.*):(%d+)$")
-
-	if f ~= nil then
-		return {
-			filename = f,
-			line = tonumber(l),
-			column = -1,
-		}
-	end
-
-	return {
-		filename = f,
-		line = tonumber(l),
-		column = -1,
-	}
+function M.setup(args)
+	print(args)
+	vim.api.nvim_create_user_command("Fileline", function()
+		local fileline = construct.fileline()
+		vim.fn.setreg("+", fileline)
+	end, {})
 end
 
 return M
