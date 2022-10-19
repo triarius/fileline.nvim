@@ -1,27 +1,14 @@
+-- returns a table with the keys
+-- filename = the name of the file
+-- line = the line number (if any) or -1
+-- column = the column number (if any) or -1
 return function(filename)
-	local f, l, c = string.match(filename, "^(.*):(%d+):(%d+)$")
-
-	if f ~= nil then
-		return {
-			filename = f,
-			line = tonumber(l),
-			column = tonumber(c),
-		}
-	end
-
-	f, l = string.match(filename, "^(.*):(%d+)$")
-
-	if f ~= nil then
-		return {
-			filename = f,
-			line = tonumber(l),
-			column = -1,
-		}
-	end
-
+	-- reverse the string to exploit greedy matching
+	local reversed = string.reverse(filename)
+	local matches = vim.fn.matchlist(reversed, [[\v((\d+):)?((\d+):)?(.*)]])
 	return {
-		filename = f,
-		line = tonumber(l),
-		column = -1,
+		filename = string.reverse(matches[6]),
+		line = tonumber(string.reverse(matches[4])),
+		column = tonumber(string.reverse(matches[2])),
 	}
 end
