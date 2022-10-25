@@ -3,12 +3,10 @@
 -- line = the line number (if any) or -1
 -- column = the column number (if any) or -1
 return function(filename)
-	-- reverse the string to exploit greedy matching
-	local reversed = string.reverse(filename)
-	local matches = vim.fn.matchlist(reversed, [[\v((\d+):)?((\d+):)?(.*)]])
+	local matches = vim.fn.matchlist(filename, [[\v^(.{-})(:(\d+))?(:(\d+))?$]])
 	return {
-		filename = string.reverse(matches[6]),
-		line = tonumber(string.reverse(matches[4])),
-		column = tonumber(string.reverse(matches[2])),
+		filename = matches[2],
+		line = tonumber(matches[4]),
+		column = tonumber(matches[6]),
 	}
 end
