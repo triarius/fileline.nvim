@@ -6,7 +6,8 @@ local M = {}
 function M.setup(args)
 	local args = args or {}
 
-	local destination_register = args.copy.destination_register or "+"
+	local copy = args.copy or {}
+	local destination_register = copy.destination_register or "+"
 
 	vim.api.nvim_create_user_command("Fileline", function()
 		local fileline = construct()
