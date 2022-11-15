@@ -1,4 +1,5 @@
 local construct = require("fileline.construct")
+local github_perma = require("fileline.github_perma")
 local open_file = require("fileline.open_file")
 
 local M = {}
@@ -13,6 +14,11 @@ function M.setup(args)
 		local fileline = construct()
 		vim.fn.setreg(destination_register, fileline)
 	end, {})
+
+	vim.api.nvim_create_user_command("GHPerma", function(t)
+		local fileline = github_perma(t.line1, t.line2)
+		vim.fn.setreg(destination_register, fileline)
+	end, { range = true })
 
 	local grp = vim.api.nvim_create_augroup("fileilne", {})
 
