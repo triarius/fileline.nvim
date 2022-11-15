@@ -26,3 +26,10 @@ Here, `settings` is a table as outlined below.
   },
 }
 ```
+
+# Usage
+You can open a file at a line and column using colons:
+```
+nvim file:l:c
+```
+And you can copy the filename to clipboard with the `Fileline` command.
